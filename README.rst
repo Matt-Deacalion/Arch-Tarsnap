@@ -10,7 +10,7 @@ You can auto-install this using the `install.sh` script:
 
 .. code-block:: bash
 
-    # ./install.sh
+    $ sudo ./install.sh
 
 License
 -------
