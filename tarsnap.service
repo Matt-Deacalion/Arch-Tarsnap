@@ -1,0 +1,5 @@
+[Unit]
+Description=Tarsnap backup
+
+[Service]
+ExecStart=/usr/local/sbin/backup
