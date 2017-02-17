@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Backup pacman installed packages list
+pacman -Qqe > /root/pkglist.txt
+
+# Create a remote backup of the entire root filesystem using tarsnap,
+# excludes the directories and files matched in /etc/tarsnap/tarsnap.conf
+dt=`date +"backup-%Y-%m-%d_%H:%M"`
+
+tarsnap -c -f $dt /
