@@ -1,0 +1,73 @@
+#!/usr/bin/env python
+
+"""
+Command line tool that returns a list of all
+installed plugins in Firefox and Chromium.
+
+Wednesday, 22 Feb 20:04:31 GMT 2017
+"""
+__author__ = 'Matt Deacalion Stevens'
+
+import glob
+import json
+from os.path import expanduser
+from pathlib import Path
+
+
+def get_settings(pathname):
+    """
+    Takes a pathname, loads all JSON files matching the glob pattern.
+    Returns a list of loaded objects.
+    """
+    path = str(Path(expanduser('~')) / Path(pathname))
+
+    json_objects = []
+
+    for json_file in glob.glob(path):
+        json_objects.append(json.load(open(json_file)))
+
+    return json_objects
+
+
+def get_firefox_plugins():
+    """
+    Returns Firefox Addons installed as a list of strings.
+    """
+    plugins = []
+
+    for settings in get_settings('.mozilla/firefox/*.default/addons.json'):
+        plugins.extend([plugin['name'] for plugin in settings['addons']])
+
+    return sorted(plugins)
+
+
+def get_chromium_plugins():
+    """
+    Returns Chromium Extensions installed as a list of strings.
+    """
+    plugins = []
+
+    for settings in get_settings('.config/chromium/Default/Extensions/*/*/manifest.json'):
+        if '__MSG_APP_NAME__' not in settings.get('name'):
+            plugins.append(settings['name'])
+
+    return sorted(plugins)
+
+
+print('=== Mozilla Firefox Addons ===\n')
+firefox_plugins = get_firefox_plugins()
+
+if not firefox_plugins:
+    print('\tNo Addons')
+else:
+    for firefox_plugin in sorted(firefox_plugins):
+        print('\t- {}'.format(firefox_plugin))
+
+print('\n=== Chromium Extensions ===\n')
+chromium_plugins = get_chromium_plugins()
+
+if not chromium_plugins:
+    print('\tNo Extensions')
+else:
+    for chromium_plugin in sorted(chromium_plugins):
+        print('\t- {}'.format(chromium_plugin))

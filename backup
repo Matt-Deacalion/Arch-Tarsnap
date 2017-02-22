@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Backup all installed browser plugins
+su - USER -c backup-browser-plugins > /root/browser-plugins.txt
+
 # Backup pacman installed packages list
 pacman -Qqe > /root/pkglist.txt
 

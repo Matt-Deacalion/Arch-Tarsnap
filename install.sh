@@ -46,7 +46,14 @@ sudo chmod 700 /usr/local/tarsnap-cache
 #
 # Install our `backup` command
 #
+sed -i "s/USER/$USER/" backup
 sudo cp backup /usr/local/sbin/
+
+
+#
+# Install our `backup-browser-plugins` command
+#
+sudo cp backup-browser-plugins /usr/local/sbin/
 
 
 #
